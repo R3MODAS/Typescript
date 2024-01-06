@@ -36,3 +36,17 @@ function clock(){
 
 
 setInterval(clock,1000)
+
+function isPrimeNo(x){
+    for(let i = 2; i <= x - 1; i++){
+        if(x % i === 0){
+            return false;
+        }
+    }
+    return true;
+}
+
+const isPrime = isPrimeNo(4);
+
+if(isPrime) console.log("It is prime");
+else console.log("It is not prime")
