@@ -33,83 +33,78 @@ const users = [
         name: "Remo",
         kidneys: [
             { healthy: true },
-            { healthy: true }
+            { healthy: false }
         ]
     }
 ];
 
-app.get("/", (req, res) => {
+app.get("/", (req,res) => {
     const patientName = users[0].name;
     const kidneys = users[0].kidneys;
-    const numberOfKidneys = kidneys.length;
+    const noOfKidneys = kidneys.length;
 
-    // healthy kidneys
-    const numberOfHealthyKidneys = kidneys.filter((kidney) => kidney.healthy === true).length
-
-    // unhealthy kidneys
-    const numberOfUnhealthyKidneys = kidneys.filter((kidney) => kidney.healthy === false).length
+    const healthyKidneys = kidneys.filter(kidney => kidney.healthy === true).length
+    const unhealthyKidneys = kidneys.filter(kidney => kidney.healthy === false).length
 
     res.json({
         patientName,
-        numberOfKidneys,
-        numberOfHealthyKidneys,
-        numberOfUnhealthyKidneys
-    });
+        noOfKidneys,
+        healthyKidneys,
+        unhealthyKidneys
+    })
 })
 
 // middlewares
 app.use(express.json());
 
-app.post("/", (req, res) => {
-    const healthy = req.body.healthy;
-    users[0].kidneys.push({
-        "healthy": healthy
-    })
-    res.json({
-        message: `Added a new kidney with the status of ${healthy}`
-    });
-})
-
-app.put("/", (req, res) => {
-    if(checkKidneyStatus()){
-        users[0].kidneys.forEach((kidney) => kidney.healthy = true)
-        res.json({
-            message: `Updated every kidney with the status healthy`
-        });
-    }
-    else{
-        res.status(411).json({
-            message : `Every kidney has a status healthy`
+app.post("/", (req,res) => {
+    const {healthy} = req.body;
+    const kidney = users[0].kidneys;
+        kidney.push({
+            healthy
         })
-    }
+        res.json({
+            message : `You have successfully added a healthy kidney`
+        })
 })
 
-function checkKidneyStatus() {
-    let isKidneyHealthy = false;
+function checkKidneyStatus(){
+    let isKidneyOk = false;
     for(let i = 0; i < users[0].kidneys.length; i++){
         if(!users[0].kidneys[i].healthy){
-            isKidneyHealthy = true;
+            isKidneyOk = true
         }
     }
-    return isKidneyHealthy
+    return isKidneyOk
 }
 
-app.delete("/", (req, res) => {
-
+app.put("/", (req,res) => {
     if(checkKidneyStatus()){
-        const HealthyKidneys = users[0].kidneys.filter((kidney) => kidney.healthy === true)
-        users[0].kidneys = HealthyKidneys;
+        users[0].kidneys.forEach(kidney => kidney.healthy = true)
         res.json({
-            message: `Removed kidney with the status unhealthy`
-        });
+            message :  `Updated every kidney to healthy`
+        })
     }
     else{
         res.status(411).json({
-            message : `No kidney is unhealthy to be removed`
+            message : `You have got all healthy kidneys`
         })
     }
+    // users[0].kidneys.forEach(kidney => kidney.healthy = true);
+})
 
-
+app.delete("/", (req,res) => {
+    if(checkKidneyStatus()){
+        const healthyKidneys = users[0].kidneys.filter(k => k.healthy === true);
+        users[0].kidneys = healthyKidneys;
+        res.json({
+            message : `Removed kidney with the status unhealthy`
+        })
+    }else{
+        res.status(411).json({
+            message : `You don't have any unhealthy kidney`
+        })
+    }
 })
 
 app.listen(3000, () => {
