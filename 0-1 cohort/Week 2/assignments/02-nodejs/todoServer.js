@@ -39,11 +39,132 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-  const express = require('express');
-  const bodyParser = require('body-parser');
-  
-  const app = express();
-  
-  app.use(bodyParser.json());
-  
-  module.exports = app;
+
+const fs = require("fs");
+const express = require('express');
+const app = express();
+
+// middlewares
+app.use(express.json());
+
+app.get("/todos", (req,res) => {
+  fs.readFile("todos.json", "utf-8", (err,data) => {
+    if(err) throw err
+    const todos = JSON.parse(data);
+    res.json(todos);
+  })
+})
+
+function findTodoIndex(todos, id){
+  for(let i =0; i<todos.length; i++){
+    if(todos[i].id === id) return i;
+  }
+  return -1;
+}
+
+app.get("/todos/:id", (req,res) => {
+  fs.readFile("todos.json", "utf-8", (err,data) => {
+    if(err) throw err
+
+    const todos = JSON.parse(data)
+    const requestedId = parseInt(req.params.id)
+    const todoIndex = findTodoIndex(todos,requestedId)
+
+    if(todoIndex === -1){
+      res.status(404).json({
+        message: 'Item not found'
+      })
+    }
+    else{
+      res.json(todos[todoIndex])
+    }
+
+  })
+})
+
+app.post("/todos", (req,res) => {
+  const newTodoItem = {
+    id : Math.floor(Math.random() * 100 + 1),
+    title : req.body.title,
+    description : req.body.description
+  }
+
+  fs.readFile("todos.json", "utf-8", (err,data) => {
+    if(err) throw err
+    let todos = JSON.parse(data)
+    todos.push(newTodoItem)
+    
+    fs.writeFile("todos.json", JSON.stringify(todos), (err,data) => {
+      if(err) throw err
+      res.status(201).json(newTodoItem.id);
+    })
+
+  })
+
+})
+
+app.put("/todos/:id", (req,res) => {
+  fs.readFile("todos.json", "utf-8", (err,data) => {
+    if(err) throw err
+    const todos = JSON.parse(data);
+    const requestedId = parseInt(req.params.id);
+
+    const todoIndex = findTodoIndex(todos, requestedId);
+    if(todoIndex === -1){
+      res.status(404).json({
+        message: 'Item not found'
+      })
+    }
+    else{
+      const updatedTodoItem = {
+        id : todos[todoIndex].id,
+        title : req.body.title,
+        description : req.body.description
+      }
+      todos[todoIndex] = updatedTodoItem;
+      fs.writeFile("todos.json", JSON.stringify(todos), (err,data) => {
+        if(err) throw err
+        res.status(200).json(updatedTodoItem)
+      })
+    }
+
+  })
+})
+
+function removeAtIndex(todos, id){
+  let newArray = [];
+  for (let i = 0; i < todos.length; i++) {
+    if (i !== id) newArray.push(todos[i]);
+  }
+  return newArray;
+}
+
+app.delete("/todos/:id", (req,res) => {
+  fs.readFile("todos.json", "utf-8", (err,data) => {
+    if(err) throw err
+    let todos = JSON.parse(data);
+    const requestedId = parseInt(req.params.id);
+
+    const todoIndex = findTodoIndex(todos,requestedId);
+    if(todoIndex === -1){
+      res.status(404).json({
+        message: 'Item not found'
+      })
+    }
+    else{
+      todos = removeAtIndex(todos, todoIndex)
+      fs.writeFile("todos.json", JSON.stringify(todos), (err,data) => {
+        if(err) throw err
+        res.status(200).json({
+          message : 'Item deleted Successfully'
+        })
+      })
+
+    }
+    
+  })
+})
+
+app.listen(3000, () => console.log(`Server started at http://localhost:3000`))
+
+module.exports = app;
