@@ -49,38 +49,41 @@ const app = express();
 // middlewares
 app.use(express.json());
 
-app.get("/todos", (req,res) => {
-  fs.readFile("todos.json", "utf-8", (err,data) => {
-    if(err) throw err
-    const todos = JSON.parse(data);
-    res.json(todos);
-  })
-})
-
-function findTodoIndex(todos, id){
-  for(let i =0; i<todos.length; i++){
-    if(todos[i].id === id) return i;
+function findIndex(todos,index){
+  for(let i = 0; i < todos.length; i++){
+    if(todos[i].id === index) return i;
   }
   return -1;
 }
 
+function deleteUsingIndex(todos,index){
+  return todos.filter((todo,ind) => ind !== index)
+}
+
+app.get("/todos", (req,res) => {
+  fs.readFile("todos.json", "utf-8", (err,data) => {
+    if(err) throw err;
+    const todos = JSON.parse(data);
+    res.status(200).json(todos)
+  })
+})
+
 app.get("/todos/:id", (req,res) => {
   fs.readFile("todos.json", "utf-8", (err,data) => {
-    if(err) throw err
+    if(err) throw err;
+    const todos = JSON.parse(data);
+    const requestedId = parseInt(req.params.id);
 
-    const todos = JSON.parse(data)
-    const requestedId = parseInt(req.params.id)
-    const todoIndex = findTodoIndex(todos,requestedId)
+    const todoIndex = findIndex(todos,requestedId)
 
     if(todoIndex === -1){
       res.status(404).json({
-        message: 'Item not found'
+        message : `Item not found`
       })
     }
     else{
-      res.json(todos[todoIndex])
+      res.status(200).json(todos[todoIndex]);
     }
-
   })
 })
 
@@ -92,29 +95,29 @@ app.post("/todos", (req,res) => {
   }
 
   fs.readFile("todos.json", "utf-8", (err,data) => {
-    if(err) throw err
-    let todos = JSON.parse(data)
-    todos.push(newTodoItem)
-    
+    if(err) throw err;
+    const todos = JSON.parse(data);
+    todos.push(newTodoItem);
+
     fs.writeFile("todos.json", JSON.stringify(todos), (err,data) => {
       if(err) throw err
-      res.status(201).json(newTodoItem.id);
+      res.status(201).json(todos);
     })
-
+  
   })
-
 })
 
 app.put("/todos/:id", (req,res) => {
   fs.readFile("todos.json", "utf-8", (err,data) => {
-    if(err) throw err
+    if(err) throw err;
     const todos = JSON.parse(data);
     const requestedId = parseInt(req.params.id);
 
-    const todoIndex = findTodoIndex(todos, requestedId);
+    const todoIndex = findIndex(todos,requestedId)
+
     if(todoIndex === -1){
       res.status(404).json({
-        message: 'Item not found'
+        message : `Item not found`
       })
     }
     else{
@@ -126,47 +129,40 @@ app.put("/todos/:id", (req,res) => {
       todos[todoIndex] = updatedTodoItem;
       fs.writeFile("todos.json", JSON.stringify(todos), (err,data) => {
         if(err) throw err
-        res.status(200).json(updatedTodoItem)
+        res.status(200).json(todos)
       })
     }
-
   })
 })
-
-function removeAtIndex(todos, id){
-  let newArray = [];
-  for (let i = 0; i < todos.length; i++) {
-    if (i !== id) newArray.push(todos[i]);
-  }
-  return newArray;
-}
 
 app.delete("/todos/:id", (req,res) => {
   fs.readFile("todos.json", "utf-8", (err,data) => {
-    if(err) throw err
+    if(err) throw err;
     let todos = JSON.parse(data);
     const requestedId = parseInt(req.params.id);
 
-    const todoIndex = findTodoIndex(todos,requestedId);
+    const todoIndex = findIndex(todos,requestedId)
+
     if(todoIndex === -1){
       res.status(404).json({
-        message: 'Item not found'
+        message : `Item not found`
       })
     }
     else{
-      todos = removeAtIndex(todos, todoIndex)
+      todos = deleteUsingIndex(todos, todoIndex);
       fs.writeFile("todos.json", JSON.stringify(todos), (err,data) => {
         if(err) throw err
         res.status(200).json({
-          message : 'Item deleted Successfully'
+          message : `Todo item was found and deleted`
         })
       })
-
     }
-    
+
   })
 })
 
-app.listen(3000, () => console.log(`Server started at http://localhost:3000`))
+app.listen(3000, () => {
+  console.log(`Server started at http://localhost:3000`)
+})
 
 module.exports = app;
