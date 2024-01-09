@@ -143,6 +143,7 @@ function calculateRequests(req,res,next){
 }
 
 app.use(calculateRequests)
+app.use(express.json())
 
 app.get("/health-checkup", userMiddleware, kidneyMiddleware, (req,res) => {
   res.json({
