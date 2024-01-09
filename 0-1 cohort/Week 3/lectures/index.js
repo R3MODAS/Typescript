@@ -134,6 +134,16 @@ function kidneyMiddleware(req,res,next){
   }
 }
 
+let numberOfRequests = 0;
+
+function calculateRequests(req,res,next){
+  numberOfRequests++;
+  console.log(`Number of requests made so far ${numberOfRequests}`);
+  next()
+}
+
+app.use(calculateRequests)
+
 app.get("/health-checkup", userMiddleware, kidneyMiddleware, (req,res) => {
   res.json({
     message : 'Your heart is healthy'
