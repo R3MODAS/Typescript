@@ -185,7 +185,7 @@ const app = express();
 
 const schema = zod.object({
   email : zod.string().email({ message: "Invalid email address" }),
-  password : zod.string().min(8, {message : 'Please enter minimum 8 characters'}),
+  password : zod.coerce.string().min(8, {message : 'Please enter minimum 8 characters'}),
   country : zod.literal('IN').or(zod.literal('US')),
   kidneys : zod.array(zod.number()).max(2, {message: "Must not have more than two kidneys"})
 })
@@ -194,25 +194,20 @@ app.use(express.json())
 
 app.post("/health-checkup", (req,res) => {
   const response = schema.safeParse(req.body);
-  // console.log(response.error)
+
   if(!response.success){
+   const errmsg =  response.error.errors.map(err => err?.message)
+    
     res.status(411).json({
-      message : `Input is invalid`
+      message : errmsg
     })
   }
   else{
     res.json({
-      response : response.data
+      message : `Submitted successfully`
     })
   }
 }) 
-
-// app.use((err,req,res,next) => {
-//   // console.log(err);
-//   res.json({
-//     message : `Some problems has occured on our server`
-//   })
-// })
 
 
 app.listen(3000, () => console.log(`Server started at http://localhost:3000`))
