@@ -172,14 +172,29 @@ const app = express();
 // })
 
 //! Intro to ZOD
-const schema = zod.array(zod.number());
+// const schema = zod.array(zod.number());
+
+// Schema for this
+/*
+  {
+    email : string 
+    password : atleast 8 letters
+    country : "IN" , "US"
+  }
+*/
+
+const schema = zod.object({
+  email : zod.string().email({ message: "Invalid email address" }),
+  password : zod.string().min(8, {message : 'Please enter minimum 8 characters'}),
+  country : zod.literal('IN').or(zod.literal('US')),
+  kidneys : zod.array(zod.number()).max(2, {message: "Must not have more than two kidneys"})
+})
 
 app.use(express.json())
-app.post("/health-checkup", (req,res) => {
-  const kidneys = req.body.kidneys;
-  const response = schema.safeParse(kidneys);
-  // console.log(response.error)
 
+app.post("/health-checkup", (req,res) => {
+  const response = schema.safeParse(req.body);
+  // console.log(response.error)
   if(!response.success){
     res.status(411).json({
       message : `Input is invalid`
@@ -187,7 +202,7 @@ app.post("/health-checkup", (req,res) => {
   }
   else{
     res.json({
-      response
+      response : response.data
     })
   }
 }) 
