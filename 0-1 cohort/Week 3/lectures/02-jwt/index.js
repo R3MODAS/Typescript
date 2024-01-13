@@ -32,6 +32,7 @@ function userExists(username, password) {
     // write logic to return true or false if this user exists
     // in ALL_USERS array
 
+    //! using forEach loop 
     // let checkUser = false;
     // ALL_USERS.forEach((user) => {
     //     if (user.username === username && user.password === password) {
