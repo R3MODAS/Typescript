@@ -40,7 +40,7 @@ function userExists(username, password) {
     // });
     // return checkUser;
 
-    //! Hard Todo (using find)
+    //! Hard Todo (using find function)
     let checkUser = false;
     ALL_USERS.find(user => {
         if (user.username === username && user.password === password) {
