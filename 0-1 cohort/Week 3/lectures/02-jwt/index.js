@@ -51,8 +51,6 @@ function userExists(username, password) {
     return checkUser;
 }
 
-
-
 app.post("/signin", (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -63,17 +61,17 @@ app.post("/signin", (req, res) => {
         );
     }
 
-    let token = jwt.sign({ password: password }, jwtPassword)
-    return res.json({
+    let token = jwt.sign({password : password}, jwtPassword)
+    res.json({
         token
     })
 })
 
 app.get("/users", (req, res) => {
     try {
-        const token = req.headers.authorization
-        const decoded = jwt.verify(token, jwtPassword)
-        const password = decoded.password
+        const token = req.headers.authorization;
+        const decoded = jwt.verify(token, jwtPassword);
+        const password = decoded.password;0
 
         const filteredUser = ALL_USERS.filter(user => user.password != password);
         res.json({
