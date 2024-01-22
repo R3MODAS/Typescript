@@ -71,7 +71,7 @@ app.get("/users", (req, res) => {
     try {
         const token = req.headers.authorization;
         const decoded = jwt.verify(token, jwtPassword);
-        const password = decoded.password;0
+        const password = decoded.password;
 
         const filteredUser = ALL_USERS.filter(user => user.password != password);
         res.json({
