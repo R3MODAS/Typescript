@@ -1,87 +1,81 @@
-const express = require("express");
-const app = express();
-const jwt = require("jsonwebtoken");
-const jwtPassword = "123456";
+/*
+    Assignment:
 
-app.use(express.json());
+    1. post /signin with body - { username: string, password: string}
+    returns a jwt with username encrypted
+
+    2. get /users with headers - authorization header
+    returns an array of all users if user is signed in (token is correct)
+    returns 403 status code if not
+
+*/
+
+const express = require("express")
+const jwt = require("jsonwebtoken")
+
+const app = express()
+
+const jwtPassword = "123456"
+const PORT = 3000
 
 const ALL_USERS = [
     {
-        username: "harkirat@gmail.com",
-        password: "123",
-        name: "harkirat singh",
+        username: "John Doe",
+        password: "P@ssw0rd",
+        email: "john.doe@example.com",
     },
     {
-        username: "raman@gmail.com",
-        password: "12321",
-        name: "Raman singh",
+        username: "Alice Smith",
+        password: "Secure123",
+        email: "alice.smith@example.com",
     },
     {
-        username: "priya@gmail.com",
-        password: "13321",
-        name: "Priya kumari",
+        username: "Bob Jones",
+        password: "StrongPwd456",
+        email: "bob.jones@example.com",
     },
     {
-        username: "remo@gmail.com",
-        password: "123321",
-        name: "Sharadindu Das",
+        username: "Emma Wilson",
+        password: "SecretPass",
+        email: "emma.wilson@example.com",
     },
 ];
 
-function userExists(username, password) {
-    // write logic to return true or false if this user exists
-    // in ALL_USERS array
+app.use(express.json())
 
-    //! using forEach loop 
-    // let checkUser = false;
-    // ALL_USERS.forEach((user) => {
-    //     if (user.username === username && user.password === password) {
-    //         checkUser = true;
-    //     }
-    // });
-    // return checkUser;
-
-    //! Hard Todo (using find function)
-    let checkUser = false;
+function userExists(username, password){
+    //! find method (Hard Todo)
+    let checkUser = false
     ALL_USERS.find(user => {
-        if (user.username === username && user.password === password) {
-            checkUser = true;
+        if(user.username === username && user.password === password){
+            checkUser = true
         }
     })
-    return checkUser;
+    return checkUser
 }
 
-app.post("/signin", (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
-
-    if (!userExists(username, password)) {
+app.post("/signin", (req,res) => {
+    const {username,password} = req.body
+    console.log(userExists(username,password))
+    if(!userExists(username,password)){
         return res.status(403).json(
             { message: "User doesnt exist in our in memory db" }
         );
     }
-
-    let token = jwt.sign({password : password}, jwtPassword)
-    res.json({
-        token
-    })
-})
-
-app.get("/users", (req, res) => {
-    try {
-        const token = req.headers.authorization;
-        const decoded = jwt.verify(token, jwtPassword);
-        const password = decoded.password;
-
-        const filteredUser = ALL_USERS.filter(user => user.password != password);
+    else{
+        let token = jwt.sign({username}, jwtPassword)
         res.json({
-            users : filteredUser
-        })
-    } catch (err) {
-        return res.status(403).json({
-            message: `Invalid token`
+            token
         })
     }
 })
 
-app.listen(3000, () => console.log(`Server started at http://localhost:3000`))
+app.get("/users", (req,res) => {
+    const token = req.headers.authorization
+    const {username} = jwt.verify(token, jwtPassword)
+    res.json({
+        users: ALL_USERS.filter(user => user.username === username ? false : true) 
+    })
+})
+
+app.listen(PORT, () => console.log(`Server started at http://localhost:${PORT}`))
