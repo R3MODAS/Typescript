@@ -1,3 +1,9 @@
+//! Installation of Typescript
+/*
+  npm i -g typescript => for installing typescript globally
+  tsc (compiler for typescript) to convert it to javascript
+*/
+
 //! Basic primitive types
 // let userName: string = "Remo"
 // let userAge: number = 23
