@@ -1,9 +1,3 @@
-//! Installation of Typescript
-/*
-  npm i -g typescript => for installing typescript globally
-  tsc (compiler for typescript) to convert it to javascript
-*/
-
 //! Basic primitive types
 // let userName: string = "Remo"
 // let userAge: number = 23
@@ -168,39 +162,39 @@
 // roles = ['admin', 'user']
 
 //TODO: Custom generic types
-type DataStorage<T> = {
-  storage: T[];
-  add: (data: T) => void;
-};
+// type DataStorage<T> = {
+//   storage: T[];
+//   add: (data: T) => void;
+// };
 
-const textStorage: DataStorage<string> = {
-  storage: [],
-  add(data) {
-    this.storage.push(data);
-  },
-};
+// const textStorage: DataStorage<string> = {
+//   storage: [],
+//   add(data) {
+//     this.storage.push(data);
+//   },
+// };
 
-type User = {
-  name: string;
-  age: number;
-  isAdmin: boolean;
-  id: string | number;
-};
+// type User = {
+//   name: string;
+//   age: number;
+//   isAdmin: boolean;
+//   id: string | number;
+// };
 
-const userStorage: DataStorage<User> = {
-  storage: [],
-  add(user) {
-    this.storage.push(user);
-  },
-};
+// const userStorage: DataStorage<User> = {
+//   storage: [],
+//   add(user) {
+//     this.storage.push(user);
+//   },
+// };
 
-function merge<T, U>(a: T, b: U) {
-  return { ...a, ...b };
-}
+// function merge<T, U>(a: T, b: U) {
+//   return { ...a, ...b };
+// }
 // const newUser = merge<{ name: string }, { age: number }>(
 //   { name: "Remo" },
 //   { age: 24 }
 // );
 
 //? Typescript still gets the type of the values
-const newUser = merge({ name: "Remo" }, { age: 24 });
+// const newUser = merge({ name: "Remo" }, { age: 24 });
