@@ -70,7 +70,7 @@
 // ----------------------------------------
 
 //! Functions
-//! Optional Parameter
+//TODO: Optional Parameter
 // type FuncType = (a: number, b: number, c?: number) => void;
 
 // const func: FuncType = (a, b, c) => {
@@ -82,7 +82,7 @@
 
 // func(10, 20, 30);
 
-//! Rest Operator
+//TODO: Rest Operator
 // type FuncType = (...nums: Array<Number>) => void;
 // const func: FuncType = (...nums) => {
 //   console.log(nums);
@@ -126,11 +126,102 @@
 //   throw new Error()
 // }
 
-//! Type Assertion
+// ----------------------------------------
+
+//! Type Assertion and How to select DOM elements
 // const btn = document.getElementById("btn") as HTMLElement;
 // const btn = <HTMLElement>document.getElementById("btn");
-const btn = document.getElementById("btn")!;
-btn.onclick;
+// const btn = document.getElementById("btn")!;
+// btn.onclick;
 
-const img = document.getElementById("myimg") as HTMLImageElement;
-img.src;
+// const img = document.getElementById("myimg") as HTMLImageElement;
+// img.src;
+
+// const form = document.querySelector("#myform") as HTMLFormElement;
+// const textInput = document.querySelector("#name") as HTMLInputElement;
+// const ageInput = document.querySelector("#age") as HTMLInputElement;
+
+// form.onsubmit = (e: SubmitEvent) => {
+//   e.preventDefault();
+//   const name = textInput.value;
+//   const num = Number(ageInput.value);
+
+//   const div = document.createElement("div");
+//   div.textContent = `Name: ${name} | Age: ${num}`;
+//   document.body.append(div);
+
+//   textInput.value = ""
+//   ageInput.value = ""
+// };
+
+// interface User{
+//     [key: string]: string;
+// }
+
+// const user: User = {
+//     name: "Remo",
+//     email: "abc@gmail.com",
+//     place: "kpa",
+// }
+
+// ----------------------------------------
+
+//! Type Utility
+
+//TODO: Partial<Type>
+// type User = {
+//     name: string,
+//     email: string
+// }
+// type User2 = Partial<User>
+
+//TODO: Required<Type> - opposite of partial
+// type User = {
+//     name?: string,
+//     email: string
+// }
+// type User2 = Required<User>
+// const user: User2 = {
+//     name: "Remo",
+//     email: "abc@gmail.com"
+// }
+
+//! Generics
+//TODO: Example 1
+// const func = <CustomType>(data: CustomType): void => {
+//     console.log(data)
+// }
+// const num = func<number>(20)
+// const string = func<string>("Remo")
+// const bool = func<boolean>(true)
+
+// type Person = {
+//   name: string;
+//   age: number;
+// };
+
+//TODO: Example 2
+// const func = <CustomType>(data: CustomType): void => {
+//   console.log(data);
+// };
+// const person1: Person = {
+//   name: "Remo",
+//   age: 24,
+// };
+// func<Person>(person1);
+
+//TODO: Example 3
+// const func = <T, U>(a: T, b: U): void => {
+//   console.log(`Output is ${a} and ${b}`);
+// };
+// func<number, number>(10, 20);
+// func<string, string>("Remo", "Ram");
+// func<string, number>("Remo", 24);
+
+//TODO: Example 4
+const func = <T, U>(a: T, b: U): { a: T; b: U } => {
+  return { a, b };
+};
+
+const result = func<number, string>(24, "Remo");
+console.log(result)
