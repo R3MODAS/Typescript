@@ -1,21 +1,12 @@
-import { type ReactNode } from "react";
+import goalImg from "../assets/goals.jpg"
 
-type HeaderProps = {
-  image: {
-    src: string;
-    alt: string;
-  };
-  children: ReactNode;
-};
-
-const Header = ({image, children}: HeaderProps) => {
+const Header = () => {
   return (
     <header>
-      {/* <img src={image.src} alt={image.alt} /> */}
-      <img {...image} />
-      {children}
+        <img src={goalImg} alt="this is goal img" />
+        <h1>My TodoList</h1>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

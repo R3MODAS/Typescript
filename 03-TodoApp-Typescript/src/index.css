@@ -106,13 +106,15 @@ li {
 li article {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
 }
 
 li h2 {
   margin: 0;
-  font-size: 1.25rem;
+  line-height: 1.2;
+  font-size: 1.1rem;
   color: #b1c1c3;
+  margin-bottom: 5px;
 }
 
 li p {
@@ -123,7 +125,6 @@ li p {
 
 li button {
   font: inherit;
-  padding: 0 0.5rem;
   background: transparent;
   border: none;
   color: #909a9a;
