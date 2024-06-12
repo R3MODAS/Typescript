@@ -13,42 +13,44 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-y-8 text-center">
       {/* =============== Props in Typescript =============== */}
-      <div className="text-center">
-        <h2>01 - Props in typescript</h2>
+      <div>
+        <h2 className="mb-2">01 - Props in typescript</h2>
         {/* <Button backgroundColor="red" color="white" fontSize={20} padding="15px 30px" text="Custom Button" users={["Remo", "Ram", "Shyam"]} /> */}
         <Button1
           style={{
             backgroundColor: "red",
             color: "white",
-            fontSize: "20px",
-            padding: "15px 30px",
+            fontSize: "16px",
+            padding: "10px 15px",
           }}
         />
       </div>
 
       {/* =============== Props (functions) in Typescript =============== */}
       <div>
-        <h2>Function as props in typescript</h2>
+        <h2 className="mb-2">02 - Function as props in typescript</h2>
         <Button2 handleClick={() => alert("Works")} />
       </div>
 
       {/* ============== Children in Typescript ============== */}
       <div>
-        <h2>Children as props in typescript</h2>
+        <h2 className="mb-2">03 - Children as props in typescript</h2>
         <Button3>Click me!</Button3>
       </div>
 
       {/* ============== Passing states in Typescript ============== */}
       <div>
-        <h2>states as props in typescript</h2>
+        <h2 className="mb-2">04 - states as props in typescript</h2>
         <Button4 count={count} setCount={setCount} />
         <div>{count}</div>
       </div>
 
-      {/* ============== Passing states in Typescript ============== */}
+      {/* ============== Passing props of any element (button, img) in Typescript ============== */}
       <div>
-        <h2>How to button component without defining types of props</h2>
-        <Button5 />
+        <h2 className="mb-2">
+          05 -How to button component without defining types of props
+        </h2>
+        <Button5 type="button" autoFocus={true} defaultValue="test" className="bg-white text-black py-3 px-5 font-bold" />
       </div>
     </main>
   );

@@ -1,7 +1,13 @@
-const Button = () => {
-  return (
-    <button className="bg-white text-black py-3 px-5 font-bold">Button</button>
-  )
-}
+import { ComponentPropsWithoutRef } from "react";
 
-export default Button
+type ButtonProps = ComponentPropsWithoutRef<"button">;
+
+const Button = ({ type, autoFocus, ...rest }: ButtonProps) => {
+  return (
+    <button type={type} autoFocus={autoFocus} {...rest}>
+      Click me!
+    </button>
+  );
+};
+
+export default Button;
