@@ -16,7 +16,7 @@ const Button = ({ count, setCount }: ButtonProps) => {
       className="bg-white text-black py-3 px-5 font-bold"
       onClick={() => setCount(count + 1)}
     >
-      Click me!
+      Count: {count}
     </button>
   );
 };
