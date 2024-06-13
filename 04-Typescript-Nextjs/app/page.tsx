@@ -1,15 +1,15 @@
 "use client";
 
-import Button1 from "@/components/examplebutton1";
-import Button2 from "@/components/examplebutton2";
-import Button3 from "@/components/examplebutton3";
-import Button4 from "@/components/examplebutton4";
-import Button5 from "@/components/examplebutton5";
-import Button6 from "@/components/examplebutton6";
-import Button7 from "@/components/examplebutton7";
-import Button8 from "@/components/examplebutton8";
-import Button9 from "@/components/examplebutton9";
-import Button10 from "@/components/examplebutton10";
+import Button1 from "@/components/button1";
+import Button2 from "@/components/button2";
+import Button3 from "@/components/button3";
+import Button4 from "@/components/button4";
+import Button5 from "@/components/button5";
+import Button6 from "@/components/button6";
+import Button7 from "@/components/button7";
+import Button8 from "@/components/button8";
+import Button9 from "@/components/button9";
+import Button10 from "@/components/button10";
 
 import { useState } from "react";
 
