@@ -8,6 +8,8 @@ import Button5 from "@/components/examplebutton5";
 import Button6 from "@/components/examplebutton6";
 import Button7 from "@/components/examplebutton7";
 import Button8 from "@/components/examplebutton8";
+import Button9 from "@/components/examplebutton9";
+import Button10 from "@/components/examplebutton10";
 
 import { useState } from "react";
 
@@ -81,6 +83,18 @@ export default function Home() {
       <div>
         <h2 className="mb-2">08 - Utilities in typescript</h2>
         <Button8 />
+      </div>
+
+      {/* ============== Generics in Typescript ============== */}
+      <div>
+        <h2 className="mb-2">09 - Generics in typescript</h2>
+        <Button9 countValue={10} countHistory={[10, 20, 30]} />
+      </div>
+
+      {/* ============== Fetching data in Typescript ============== */}
+      <div>
+        <h2 className="mb-2">10 - Fetching data in typescript</h2>
+        <Button10 />
       </div>
     </main>
   );
